@@ -12,7 +12,7 @@ execute(Req, Env) ->
         [Path]->
             case filename:extension(Path) of
                 <<".html">> -> 
-                    maybe_generate_markdown(resource_path(Path)),
+                    %maybe_generate_markdown(resource_path(Path)),
                     generate_html(resource_path(Path));
                 _Ext -> ok
             end;
@@ -21,18 +21,19 @@ execute(Req, Env) ->
     end,
     {ok, Req, Env}.
 
-maybe_generate_markdown(Path) ->
-    ModifiedAt = filelib:last_modified(source_path(Path)),
+
+%maybe_generate_markdown(Path) ->
+ %   ModifiedAt = filelib:last_modified(source_path(Path)),
+  %  
+   %%% MiddleFile =middle_path(Path),
+   % GeneratedAt = filelib:last_modified(MiddleFile),
     
-    MiddleFile =middle_path(Path),
-    GeneratedAt = filelib:last_modified(MiddleFile),
-    
-    case ModifiedAt > GeneratedAt of
-        true -> 
-            erlmarkdown:conv_file(source_path(Path), MiddleFile),
-            generate_html(Path);
-        false -> ok
-    end.
+   % case ModifiedAt > GeneratedAt of
+    %    true -> 
+     %       erlmarkdown:conv_file(source_path(Path), MiddleFile),
+      %      generate_html(Path);
+       % false -> io:format("do not need to conv_file"),ok
+   % end.
 
 
 generate_html(Path) ->
@@ -40,12 +41,13 @@ generate_html(Path) ->
     GeneratedAt = filelib:last_modified(Path),
     case ModifiedAt > GeneratedAt of
         true ->
-            {ok,Module}=erlydtl:compile_file(resource_path("dtl/article.tpl"), home_dtl),
+            {ok,Module}=erlydtl:compile_file(resource_path("dtl/article.tpl"), home_dtl,
+			[{debug_info,true},{custom_tags_dir,resource_path("dlt")},{custom_tags_modules,[erlmarkdown]}]),
 
-            {ok, IOList} = Module:render([{path,middle_path(Path)}]),
+            {ok, IOList} = Module:render([{path,source_path(Path)}]),
             write(Path,IOList);
         false->
-            ok
+            io:format("do not neet to conv_file"),ok
     end.
 
 write(File, Text) ->
@@ -81,8 +83,8 @@ resource_path(Path) ->
     File=filename:join([PrivDir, Path1]),
     File.
 
-middle_path(Path)->
-    <<(filename:rootname(Path))/binary, ".middle">>.
+%middle_path(Path)->
+ %   <<(filename:rootname(Path))/binary, ".middle">>.
 
 source_path(Path) ->
     <<(filename:rootname(Path))/binary, ".md">>.

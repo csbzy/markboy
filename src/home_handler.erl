@@ -29,7 +29,8 @@ get_topic_list(Path)->
           BaseName=filename:basename(FileName,".md"),
           {{Y,M,D},{H,Min,S}}=filelib:last_modified(FileName),
          [ <<"/",(unicode:characters_to_binary(BaseName,unicode))/binary ,".html">>, unicode:characters_to_binary(BaseName,unicode) ,io_lib:format("~4w-~4w-~4w   ~2w:~2w:~2w",[Y,M,D,H,Min,S]) ]
-      end|| FileName<-filelib:wildcard(Path)].
+      end|| FileName <- lists:reverse(lists:sort(fun(A,B)-> filelib:last_modified(A) =< filelib:last_modified(B) end,
+	  filelib:wildcard(Path)))].
 
 dir_path(Path)->
     File=resource_path(Path),

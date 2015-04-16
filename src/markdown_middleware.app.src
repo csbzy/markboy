@@ -9,7 +9,8 @@
 		kernel,
 		stdlib,
 		cowboy,
-        erlydtl
+        erlydtl,
+		xmerl
 	]},
 	{mod, {markdown_middleware_app, []}},
 	{env, []}

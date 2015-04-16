@@ -20,7 +20,7 @@
 %%% @doc
 -module(erlmarkdown).
 
--export([conv/1,
+-export([markdown/1,conv/1,
          conv_utf8/1,
          conv_file/2]).
 
@@ -54,6 +54,12 @@
 %%   - code blocks
 %%   - horizontal rules
 %% the parser then does its magic interpolating the references as appropriate
+markdown([Path])->
+	io:format("~p~n~n",[Path]),
+	{ok,Device}=file:open(Path,[read]),
+	Input=get_all_lines(Device,[]),
+	conv_utf8(Input).
+	
 conv(String) ->
     Lex = lex(String),
     UntypedLines = make_lines(Lex),

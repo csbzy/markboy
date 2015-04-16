@@ -53,15 +53,15 @@ function约束，将会调用给定的约束函数并且返回结果，给定函
 
 为了保存Cowboy可以更高效地查找正确的handler模块，Cowboy会编译定义好的路由分发规则。
 编译的方法是：cowboy_router:compile/1.
-Dispatch= cowboy_router:compile([
+	Dispatch= cowboy_router:compile([
     %% {HostMatch, list({PathMatch, Handler, Opts})}
     {'_', [{'_', my_handler, []}]}
-]),
+	]),
 %% Name, NbAcceptors, TransOpts, ProtoOpts
-cowboy:start_http(my_http_listener, 100,
-    [{port, 8080}],
-    [{env, [{dispatch, Dispatch}]}]
-).
+	cowboy:start_http(my_http_listener, 100,
+   	[{port, 8080}],
+   	[{env, [{dispatch, Dispatch}]}]
+	).
 
 如果定义好的路由分发规则有错误，cowboy_router:compile/1 
 将会返回{error, badarg}
