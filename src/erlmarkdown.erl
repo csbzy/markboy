@@ -70,7 +70,7 @@ conv_file(FileIn, FileOut) ->
     case file:open(FileIn, [read]) of
         {ok, Device} ->
             Input = get_all_lines(Device,[]),
-            Output = conv(Input),
+            Output = conv_utf8(Input),
             write(FileOut, Output);
         _ ->
             error
