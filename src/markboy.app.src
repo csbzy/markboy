@@ -1,0 +1,17 @@
+%% Feel free to use, reuse and abuse the code in this file.
+
+{application, markboy, [
+	{description, "Cowboy static file handler example with middleware component."},
+	{vsn, "1"},
+	{modules, []},
+	{registered, [markboy]},
+	{applications, [
+		kernel,
+		stdlib,
+		cowboy,
+        erlydtl,
+		xmerl
+	]},
+	{mod, {markboy, []}},
+	{env, []}
+]}.
