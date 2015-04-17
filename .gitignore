@@ -13,3 +13,6 @@ _rel/
 priv/*.md
 *.iml
 .idea
+.js
+.css
+
