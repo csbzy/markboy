@@ -20,7 +20,7 @@ start(_Type, _Args) ->
             {"/[...]", dtl_handler, []}
         ]}
     ]),
-	{ok, _} = cowboy:start_http(http, 100, [{port, 8080}], [
+{ok, _} = cowboy:start_http(http, 100, [{port, 80}], [
 		{env, [{dispatch, Dispatch}]},
 		{middlewares, [cowboy_router,cowboy_handler]}
 	]),
