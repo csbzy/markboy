@@ -12,7 +12,8 @@ rel/example_project
 _rel/
 priv/*.md
 *.iml
-.idea
+.idea/*
 .js
 .css
+
 
