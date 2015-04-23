@@ -7,15 +7,28 @@
 %% API.
 -export([start/2]).
 -export([stop/1]).
+-export([start/0]).
 
 %% API.
+
+start()->
+    ok = application:start(crypto),
+    ok = application:start(ranch),
+    ok = application:start(cowlib),
+    ok = application:start(cowboy),
+    ok = application:start(compiler),
+    ok = application:start(syntax_tools),
+    ok = application:start(merl),
+    ok = application:start(xmerl),
+    ok = application:start(erlydtl),
+    ok = application:start(markboy).
 
 start(_Type, _Args) ->
 	Dispatch = cowboy_router:compile([
         {'_', [
-            {"/css/[...]", cowboy_static, {priv_dir, markboy, "css"}},
+            {"/css/[...]", cowboy_static, {dir, "./priv/css"}},
             {"/favicon.ico", cowboy_static, {file, "favicon.ico", []}},
-            {"/js/[...]", cowboy_static, {priv_dir, markboy, "js"}},
+            {"/js/[...]", cowboy_static, {dir, "./priv/js"}},
             {"/", home_handler, []},
             {"/[...]", dtl_handler, []}
         ]}

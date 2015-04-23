@@ -61,7 +61,7 @@ get_articles_result(MDFiles)->
 
 get_priv_path()->
     case markboy_cache:get(?APP) of
-        [{?APP,PrivPath}] ->
+        {?APP,PrivPath} ->
             PrivPath;
         _ ->
             code:priv_dir(?APP)
@@ -79,7 +79,6 @@ get_md_path()->
 
 get_articles()->
     Path=filename:join(get_md_path(), <<"*.md">>),
-    ?DEBUG(Path),
     lists:reverse(
         lists:sort(
             fun(A,B)->

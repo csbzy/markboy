@@ -75,7 +75,7 @@ start_link() ->
     {stop, Reason :: term()} | ignore).
 init([]) ->
     ets:new(?ETS_MARKBOY_CACHE,[ protected,named_table, {write_concurrency,false}, {read_concurrency,true}]),
-    Path=code:priv_dir(?APP),
+    Path="./priv",
     ets:insert(?ETS_MARKBOY_CACHE,{?APP,Path}),
     {ok, #state{},0}.
 
@@ -127,8 +127,6 @@ handle_cast(_Request, State) ->
     {stop, Reason :: term(), NewState :: #state{}}).
 
 handle_info({insert,?ETS_MARKBOY_CACHE,Data},State)->
-    {Key,_Time,_Content}=Data,
-    ?DEBUG("Insert:~p",[Key]),
     ets:insert(?ETS_MARKBOY_CACHE,Data),
     {noreply,State};
 handle_info(_Info, State) ->
