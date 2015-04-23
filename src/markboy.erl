@@ -33,7 +33,8 @@ start(_Type, _Args) ->
             {"/[...]", dtl_handler, []}
         ]}
     ]),
-{ok, _} = cowboy:start_http(http, 100, [{port, 80}], [
+    Port=get_port(),
+{ok, _} = cowboy:start_http(http, 100, [{port, Port}], [
 		{env, [{dispatch, Dispatch}]},
 		{middlewares, [cowboy_router,cowboy_handler]}
 	]),
@@ -41,3 +42,12 @@ start(_Type, _Args) ->
 
 stop(_State) ->
 	ok.
+
+get_port()->
+    case os:getenv("PORT") of
+        false ->
+            {ok, Port} = 8080,
+            Port;
+        Other ->
+            list_to_integer(Other)
+    end.
