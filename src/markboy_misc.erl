@@ -17,6 +17,8 @@
     get_articles/0
 ]).
 
+-define(PRIV_PATH,<<"/data/blog">>).
+
 response(Req,?HOME)->
     Path=cowboy_req:path(Req),
     [NewestFile|_Remain]=MDFiles=get_articles(),
@@ -60,12 +62,7 @@ get_articles_result(MDFiles)->
 
 
 get_priv_path()->
-    case markboy_cache:get(?APP) of
-        {?APP,PrivPath} ->
-            PrivPath;
-        _ ->
-            code:priv_dir(?APP)
-    end.
+    ?PRIV_PATH.
 
 get_path(FilePath)->
     Path=get_priv_path(),
