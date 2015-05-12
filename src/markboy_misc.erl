@@ -17,7 +17,7 @@
     get_articles/0
 ]).
 
--define(PRIV_PATH,<<"/data/blog/priv">>).
+-define(PRIV_PATH,<<"/data/blog">>).
 
 response(Req,?HOME)->
     Path=cowboy_req:path(Req),
