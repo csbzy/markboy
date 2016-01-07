@@ -8,9 +8,15 @@
 	{applications, [
 		kernel,
 		stdlib,
+		crypto,
+		asn1,
+		public_key,
+		ssl,
 		cowboy,
         erlydtl,
-		xmerl
+		ibrowse,
+		sync,
+		lager
 	]},
 	{mod, {markboy, []}},
 	{env, []}

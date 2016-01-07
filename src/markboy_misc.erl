@@ -14,10 +14,19 @@
     get_priv_path/0,
     get_path/1,
     response/2,
-    get_articles/0
+    get_articles/0,
+    build/0
 ]).
 
--define(PRIV_PATH,"/data/blog").
+-define(PRIV_PATH,"/mnt/hgfs/workspace/markboy/priv").
+
+build()->
+    io:format("Begin to build html"),
+    MDFiles=get_articles(),
+    {ok,Module}=erlydtl:compile_file(get_path(?HOME_TPL),?HOME_TPL),
+    ResultList= get_articles_result(MDFiles),
+    {ok,Content}=Module:render([{result,ResultList}]),
+    file:write(home_name(),Content).
 
 response(Req,?HOME)->
     Path=cowboy_req:path(Req),
@@ -44,7 +53,12 @@ response(Req,?ARTICLE)->
                 [{custom_tags_dir,get_path("dlt")},{custom_tags_modules,[erlmarkdown]}]),
             {ok, Content} = Module:render([{path,MDFile}]),
             response(Req,Path,Content)
-    end.
+    end;
+response(Req,?WEIXIN_TPL)->
+    lager:info("~p",[get_path(?WEIXIN_TPL)]),
+    {ok,Module}=erlydtl:compile_file(get_path(?WEIXIN_TPL), ?WEIXIN_TPL, []),
+    {ok, Content} = Module:render([]),
+    cowboy_req:reply(200, [{<<"content-type">>, <<"text/html">>}], Content, Req).
 
 
 response(Req,Path,Content)->
@@ -81,3 +95,16 @@ get_articles()->
             fun(A,B)->
                 filelib:last_modified(A) =< filelib:last_modified(B)
             end,filelib:wildcard(binary_to_list(Path)))).
+
+home_name()->
+    get_out_put_path() ++ "/index.html" .
+
+get_out_put_path()->
+    filename:join(root_dir(),"html").
+
+
+root_dir() ->
+    Path = escript:script_name(),
+    filename:dirname(
+        filename:dirname(
+            filename:dirname(Path))).
