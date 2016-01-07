@@ -12,6 +12,7 @@
 		asn1,
 		public_key,
 		ssl,
+		xmerl,
 		cowboy,
         erlydtl,
 		ibrowse,
