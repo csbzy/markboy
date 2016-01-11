@@ -13,6 +13,7 @@
 
 <div class="container ">
   <img src = "{{ img }}" >
+  <p id ="content" class = "content"></p>
  </div>
 
  <script type="text/javascript">
@@ -22,31 +23,16 @@
              var ws = new WebSocket("ws://172.16.7.119/ws/weixin?uid={{uid}}");
              ws.binaryType = 'arraybuffer';
              ws.onopen = function() {
-                 $("#content").append("<p style='color: #80ff00;'>websocket connected!</p>");
+                 console.log("open ws socket");
              };
              ws.onmessage = function (evt) {
-
-                 $("#content").append("<p>" +  evt.data.byteLength+'\t'  + ab2str(evt.data.slice(0)) + "</p>");
+                 console.log(evt);
+                 $("#content").append("<p>" +  evt.data + "</p>");
              };
              ws.onclose = function() {
                  $("#content").append("<p style='color: #ff3737;'>websocket closed!</p>");
              };
-             $("#msg").change(function() {
-                 var val = $(this).val();
-                 if ( val )
-                 {
-                     ws.send(val);
-                 }
-                 return false;
-             });
-             $("#smt").click(function() {
-                 var val = $("#msg").val();
-                 if ( val )
-                 {
-                     ws.send(val);
-                 }
-                 return false;
-             });
+
          }
          else
          {

@@ -23,6 +23,7 @@
 -export([sub_key/1]).
 -export([following_key/1]).
 -export([followers_key/1]).
+-export([hex/1]).
 
 
 incr_userid()->
